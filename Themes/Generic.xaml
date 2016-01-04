@@ -1,0 +1,86 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
+    xmlns:local="clr-namespace:HubTileX.Controls">
+    <Style TargetType="local:HubTileX">
+        <Style.Setters>
+            <Setter Property="Height" Value="210"/>
+            <Setter Property="Width" Value="432"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:HubTileX">
+                        <Border x:Name="mainBorder" Background="{TemplateBinding Background}">
+                            <Border.Projection>
+                                <PlaneProjection x:Name="mainBorderProjection"/>
+                            </Border.Projection>
+                            <Border.Resources>
+                                <CubicEase EasingMode="EaseOut" x:Key="HubTileEaseOut"/>
+                            </Border.Resources>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="HubtileStates">
+                                    <VisualStateGroup.States>
+                                        <VisualState x:Name="Flipped">
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0" From="0" To="180.0"
+                                                                 Storyboard.TargetProperty="RotationX" 
+                                                                 Storyboard.TargetName="backProjection"/>
+                                                <DoubleAnimation Duration="0:0:0.500" To="180.0" 
+                                                                 Storyboard.TargetProperty="RotationX" 
+                                                                 Storyboard.TargetName="mainBorderProjection"/>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                               Storyboard.TargetName="FrontContent">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.200" Value="Collapsed"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                               Storyboard.TargetName="RearContent">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.500" Value="Visible"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.500" To="0.0" 
+                                                                 Storyboard.TargetProperty="RotationX" 
+                                                                 Storyboard.TargetName="mainBorderProjection"/>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                               Storyboard.TargetName="RearContent">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Collapsed"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                               Storyboard.TargetName="FrontContent">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.500" Value="Visible"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup.States>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid x:Name="mainGrid"
+                                  RenderTransformOrigin="0.5,0.5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <ContentPresenter Grid.Row="0"
+                                                  x:Name="FrontContent"
+                                                  Content="{TemplateBinding FrontContent}">
+                                    <ContentPresenter.Projection>
+                                        <PlaneProjection x:Name="frontProjection"/>
+                                    </ContentPresenter.Projection>
+                                </ContentPresenter>
+                                <ContentPresenter Grid.Row="0"
+                                                  x:Name="RearContent"
+                                                  Content="{TemplateBinding RearContent}"
+                                                  Visibility="Collapsed">
+                                    <ContentPresenter.Projection>
+                                        <PlaneProjection x:Name="backProjection"/>
+                                    </ContentPresenter.Projection>
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>
